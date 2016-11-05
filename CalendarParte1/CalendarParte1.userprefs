@@ -1,0 +1,13 @@
+﻿<Properties StartupItem="CalendarParte1.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Ui/MainWindowView.cs">
+    <Files>
+      <File FileName="Ui/MainWindowCore.cs" Line="1" Column="1" />
+      <File FileName="Ui/MainWindowView.cs" Line="8" Column="3" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
