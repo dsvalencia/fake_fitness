@@ -1,5 +1,0 @@
-/home/dmosquera/Documentos/DIA/TrabajoParte1/obj/x86/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
-/home/dmosquera/Documentos/DIA/TrabajoParte1/bin/Debug/TrabajoParte1.exe.mdb
-/home/dmosquera/Documentos/DIA/TrabajoParte1/bin/Debug/TrabajoParte1.exe
-/home/dmosquera/Documentos/DIA/TrabajoParte1/obj/x86/Debug/TrabajoParte1.exe
-/home/dmosquera/Documentos/DIA/TrabajoParte1/obj/x86/Debug/TrabajoParte1.exe.mdb
