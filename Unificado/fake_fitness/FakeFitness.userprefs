@@ -1,0 +1,14 @@
+﻿<Properties StartupConfiguration="{930C9BB6-5F46-4BB8-AC80-FDCF6EE2102B}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="View/WindowCore.cs">
+    <Files>
+      <File FileName="View/WindowCore.cs" Line="45" Column="20" />
+      <File FileName="View/WindowView.cs" Line="84" Column="57" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.FakeFitness PreferredExecutionTarget="MonoDevelop.Default" />
+</Properties>
