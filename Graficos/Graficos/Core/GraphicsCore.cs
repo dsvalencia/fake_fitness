@@ -3,15 +3,19 @@ using System.Collections.Generic;
 
 namespace Graficos
 {
-	public class GraphicsCore
+	public class DataGraphicsCore
 	{
+
+		//Clase para generar datos de las gráficas 
+
+
 		private int[] dataArray ;
 
 		private List<Activity> activities;
 		private List<BodyMeasures> measures;
 		Diary diario;
 		private int ActualMonth;
-		public GraphicsCore(Diary diario)
+		public DataGraphicsCore(Diary diario)
 		{
 			dataArray = new int[31];
 			activities = new List<Activity>();
@@ -90,7 +94,7 @@ namespace Graficos
 
 				if (i.GetDate().Month == ActualMonth)
 				{
-					dataArray[i.GetDate().Day- 1] = dataArray[i.GetDate().Day] + i.GetDuration();
+					dataArray[i.GetDate().Day- 1] = dataArray[i.GetDate().Day- 1] + i.GetDuration();
 				}
 
 			}
@@ -105,7 +109,7 @@ namespace Graficos
 
 				if (i.GetDate().Month == ActualMonth)
 				{
-					dataArray[i.GetDate().Day- 1] = dataArray[i.GetDate().Day] + 1;
+					dataArray[i.GetDate().Day- 1] = dataArray[i.GetDate().Day- 1] + 1;
 				}
 
 			}
@@ -119,7 +123,7 @@ namespace Graficos
 
 				if (i.GetDate().Month == ActualMonth)
 				{
-					dataArray[i.GetDate().Day- 1] = dataArray[i.GetDate().Day] + i.GetDistance();
+					dataArray[i.GetDate().Day- 1] = dataArray[i.GetDate().Day- 1] + i.GetDistance();
 				}
 
 			}
