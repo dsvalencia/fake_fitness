@@ -1,0 +1,36 @@
+﻿<Properties StartupConfiguration="{8E53BEAE-1421-4A57-B7A5-D2A6749AE8A3}|Default">
+  <MonoDevelop.Ide.ItemProperties.Graficos PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Graficos/Core/Ppal.cs">
+    <Files>
+      <File FileName="Graficos/IU/DrawingView.cs" Line="3" Column="19" />
+      <File FileName="Graficos/IU/MainWindowCore.cs" Line="3" Column="19" />
+      <File FileName="Graficos/IU/MainWindowView.cs" Line="6" Column="17" />
+      <File FileName="Graficos/IU/DrawingCore.cs" Line="4" Column="19" />
+      <File FileName="Graficos/Core/Activity.cs" Line="2" Column="19" />
+      <File FileName="Graficos/Core/BodyMeasures.cs" Line="2" Column="19" />
+      <File FileName="Graficos/Core/Diary.cs" Line="4" Column="19" />
+      <File FileName="Graficos/Core/GraphicsCore.cs" Line="5" Column="2" />
+      <File FileName="Graficos/Core/Ppal.cs" Line="3" Column="19" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Graficos" expanded="True">
+            <Node name="Graficos" expanded="True">
+              <Node name="References" expanded="True" />
+              <Node name="Core" expanded="True">
+                <Node name="Ppal.cs" selected="True" />
+              </Node>
+              <Node name="IU" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
