@@ -1,8 +1,11 @@
 ﻿<Properties StartupConfiguration="{930C9BB6-5F46-4BB8-AC80-FDCF6EE2102B}|Default">
   <MonoDevelop.Ide.Workbench ActiveDocument="View/WindowCore.cs">
     <Files>
-      <File FileName="View/WindowCore.cs" Line="45" Column="20" />
-      <File FileName="View/WindowView.cs" Line="84" Column="57" />
+      <File FileName="View/WindowCore.cs" Line="333" Column="5" />
+      <File FileName="View/WindowView.cs" Line="99" Column="13" />
+      <File FileName="Core/Measure.cs" Line="6" Column="27" />
+      <File FileName="Core/Exercise.cs" Line="7" Column="3" />
+      <File FileName="Core/Settings.cs" Line="7" Column="47" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />

@@ -7,7 +7,7 @@ namespace FakeFitness.Core
 		// VARS ...
 		private int id;
 		private string name;
-		private short meters;
+		private short load;
 		private short minutes;
 		private DateTime date;
 
@@ -24,10 +24,10 @@ namespace FakeFitness.Core
 			set { this.name = value; }
 		}
 
-		public short Meters
+		public short Load
 		{
-			get { return meters; }
-			set { this.meters = value; }
+			get { return load; }
+			set { this.load = value; }
 		}
 
 		public short Minutes
@@ -46,21 +46,21 @@ namespace FakeFitness.Core
 		// CONSTRUCTOR ...
 
 		// ... Para creación inicial.
-		public Exercise(int id, string name, short meters, short minutes)
+		public Exercise(int id, string name, short load, short minutes)
 		{
 			this.Id = id;
 			this.Name = name;
-			this.Meters = meters;
+			this.Load = load;
 			this.Minutes = minutes;
 			this.Date = DateTime.Now;
 		}
 
 		// ... Para utilizar en la carga del XML.
-		public Exercise(int id, string name, short meters, short minutes, DateTime date)
+		public Exercise(int id, string name, short load, short minutes, DateTime date)
 		{
 			this.Id = id;
 			this.Name = name;
-			this.Meters = meters;
+			this.Load = load;
 			this.Minutes = minutes;
 			this.Date = date;
 		}

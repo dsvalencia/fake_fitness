@@ -14,9 +14,9 @@ namespace FakeFitness.View
 		private List<Exercise> DayExercises = new List<Exercise>();
 		private List<Exercise> MonthExercises = new List<Exercise>();
 
-		//private List<Exercise> AllMetrics = new List<Exercise>();
-		//private List<Exercise> DayMetrics = new List<Exercise>();
-		//private List<Exercise> MonthMetrics = new List<Exercise>();
+		private List<Measure> AllMeasures = new List<Measure>();
+		private List<Measure> DayMeasures = new List<Measure>();
+		private List<Measure> MonthMeasures = new List<Measure>();
 
 
 		//-----------------------GENERALES/COMUNES---------------------
@@ -25,9 +25,8 @@ namespace FakeFitness.View
 		private void OnInit()
 		{
 			XmlToExercisesList();
+			XmlToMeasuresList();
 			RefreshView();
-			CalendarDay();
-			CalendarMonth();
 		}
 
 		// Cuando se cierra la aplicacion.
@@ -41,10 +40,8 @@ namespace FakeFitness.View
 		private void RefreshView()
 		{
 			CalendarMarkMonth();
-			CalendarDay();
 			CalendarMonth();
-			UpdateExercisesTreeView();
-			//UpdateMeticsTreeView();
+			CalendarDay();
 		}
 
 		private int GetIdByEditArgs(Gtk.EditedArgs e)
@@ -69,8 +66,16 @@ namespace FakeFitness.View
 					&& ae.Date.Month == Calendar.Month+1
 					&& ae.Date.Year == Calendar.Year);
 
+			// Recupera todas las medidas del día y las guarda en una lista de la clase.
+			DayMeasures =
+				AllMeasures.FindAll(am =>
+					am.Date.Day == Calendar.Day
+					&& am.Date.Month == Calendar.Month + 1
+					&& am.Date.Year == Calendar.Year);
+
 			// Muestra por pantalla las ocurrencias.
 			UpdateExercisesTreeView();
+			UpdateMeasuresTreeView();
 		}
 
 		// Gestiona los cambios cuando se cambia de mes en el calendario.
@@ -81,6 +86,12 @@ namespace FakeFitness.View
 				AllExercises.FindAll(ae =>
 					ae.Date.Month == Calendar.Month + 1
 					&& ae.Date.Year == Calendar.Year);
+
+			// Recupera todas las medidas del mes y las guarda en una lista de la clase.
+			MonthMeasures =
+				AllMeasures.FindAll(am =>
+					am.Date.Month == Calendar.Month + 1
+					&& am.Date.Year == Calendar.Year);
 
 			// Borra todas las marcas
 			for (uint i = 0; i <= 31; i++) { Calendar.UnmarkDay(i); }
@@ -93,7 +104,7 @@ namespace FakeFitness.View
 		private void CalendarMarkMonth()
 		{
 			MonthExercises.ForEach(me => Calendar.MarkDay((uint)me.Date.Day));
-			//MonthMetrics.ForEach(me => Calendar.MarkDay((uint)me.Date.Day));
+			MonthMeasures.ForEach(me => Calendar.MarkDay((uint)me.Date.Day));
 		}
 
 		//--------------------------CALENDARIO-------------------------
@@ -118,9 +129,9 @@ namespace FakeFitness.View
 			}
 
 			// Comprueba que en la caja de texto de Metros solo haya digitos.
-			if (ExerciseMeters.Text.All(char.IsDigit))
+			if (ExerciseLoad.Text.All(char.IsDigit))
 			{
-				meters = Convert.ToInt16(ExerciseMeters.Text);
+				meters = Convert.ToInt16(ExerciseLoad.Text);
 			}
 
 			// Comprueba que en la caja de texto de Minutos solo haya digitos.
@@ -159,10 +170,10 @@ namespace FakeFitness.View
 		}
 
 		// Cuando se edita el campo metros.
-		private void ExercisesMetersEdit(object o, Gtk.EditedArgs e)
+		private void ExercisesLoadEdit(object o, Gtk.EditedArgs e)
 		{
 			var exe = AllExercises.Find( ae => ae.Id == GetIdByEditArgs(e) );
-			exe.Meters = Convert.ToInt16(e.NewText);
+			exe.Load = Convert.ToInt16(e.NewText);
 			RefreshView();
 		}
 
@@ -179,12 +190,12 @@ namespace FakeFitness.View
 		// Carga la Lista en el Model del TreeView.
 		private void UpdateExercisesTreeView()
 		{
-			// Load model as ListStore to be able to insert items.
+			// Crear una ListStore vacía.
 			var model = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(string));
 
-			// Insert to the ListStore, all exercises on the list
+			// Inserta a la ListStore todas las coincidencias.
 			DayExercises.ForEach(te => model.AppendValues(
-				te.Name, te.Meters.ToString(), te.Minutes.ToString(), te.Date.ToString()));
+				te.Name, te.Load.ToString(), te.Minutes.ToString(), te.Date.ToString()));
 
 			// Actualiza la vista del arbol con la nueva info.
 			ExercisesTreeview.Model = model;
@@ -193,7 +204,6 @@ namespace FakeFitness.View
 		// Cargar del XML a una Lista de ejercicios.
 		private void XmlToExercisesList()
 		{
-			var CalendarDate = DateTime.Now;
 			if (File.Exists(Core.Settings.ExercisesXML))
 			{
 				// Carga en memoria el XML de ejercicios.
@@ -229,7 +239,7 @@ namespace FakeFitness.View
 				var child = new XElement("Exercise");
 				child.Add(new XAttribute("Id", ae.Id));
 				child.Add(new XAttribute("Name", ae.Name));
-				child.Add(new XAttribute("Meters", ae.Meters));
+				child.Add(new XAttribute("Load", ae.Load));
 				child.Add(new XAttribute("Minutes", ae.Minutes));
 				child.Add(new XAttribute("Date", ae.Date.ToString()));
 				root.Add(child);
@@ -239,6 +249,129 @@ namespace FakeFitness.View
 		}
 
 		//--------------------------EJERCICIOS-------------------------
+
+
+		//---------------------------MEDIDAS---------------------------
+
+		// ... Eventos.
+
+		// Cuando se añade un ejercicio.
+		private void MeasureAdd()
+		{
+			var id = 0;
+			var val = (short)0;
+			var name = MeasureName.Text;
+
+			foreach (var am in AllMeasures)
+			{
+				if (id <= am.Id) { id = am.Id + 1; }
+			}
+
+			// Comprueba que en la caja de texto de Value solo haya digitos.
+			if (MeasureValue.Text.All(char.IsDigit))
+			{
+				val = Convert.ToInt16(MeasureValue.Text);
+			}
+
+			AllMeasures.Add(new Measure(id, name, val));
+			RefreshView();
+		}
+
+		// Cuando se borra una medida.
+		private void MeasureDelete(int ActiveRow)
+		{
+			// Obtiene la medida en base a la fila seleccionada.
+			var measure =
+				AllMeasures.Find(am =>
+					am.Id == DayMeasures[ActiveRow].Id);
+
+			// Borrar la medida seleccionada.
+			AllMeasures.Remove(measure);
+
+			// Actualiza los cambios en la vista.
+			RefreshView();
+		}
+
+		// ... Campos editables en el tree view.
+
+		// Cuando se edita el campo nombre.
+		private void MeasureNameEdit(object o, Gtk.EditedArgs e)
+		{
+			var measure = AllMeasures.Find(am => am.Id == GetIdByEditArgs(e));
+			measure.Name = e.NewText;
+			RefreshView();
+		}
+
+		// Cuando se edita el campo valor.
+		private void MeasureValueEdit(object o, Gtk.EditedArgs e)
+		{
+			var measure = AllMeasures.Find(am => am.Id == GetIdByEditArgs(e));
+			measure.Val = Convert.ToInt16(e.NewText);
+			RefreshView();
+		}
+
+		// ... Utilidades Listas y XML.
+
+		// Carga la Lista en el Model del TreeView.
+		private void UpdateMeasuresTreeView()
+		{
+			// Crear una ListStore vacía.
+			var model = new Gtk.ListStore(typeof(string), typeof(string), typeof(string));
+
+			// Inserta a la ListStore todas las coincidencias
+			DayMeasures.ForEach(tm => model.AppendValues(
+				tm.Name, tm.Val.ToString(), tm.Date.ToString()));
+
+			// Actualiza la vista del arbol con la nueva info.
+			MeasuresTreeview.Model = model;
+		}
+
+		// Cargar del XML a una Lista de ejercicios.
+		private void XmlToMeasuresList()
+		{
+			if (File.Exists(Core.Settings.MeasuresXML))
+			{
+				// Carga en memoria el XML de ejercicios.
+				var Root = XElement.Load(Core.Settings.MeasuresXML);
+
+				// Extrae de queda ejercicio los atributos
+				var RootChilds =
+					from e
+					in Root.Elements("Measure")
+					select e.Attributes();
+
+				// Parsea los datos correctamente y los guarda en la lista.
+				foreach (var rc in RootChilds)
+				{
+					var id = Convert.ToInt32(rc.ElementAt(0).Value);
+					var name = rc.ElementAt(1).Value;
+					var val = Convert.ToInt16(rc.ElementAt(2).Value);
+					DateTime date = Convert.ToDateTime(rc.ElementAt(3).Value);
+
+					AllMeasures.Add(new Measure(id, name, val, date));
+				}
+			}
+		}
+
+		// Cuando se quiere guardar el contenido a xml.
+		private void MeasuresListToXml()
+		{
+			var root = new XElement("Measures");
+
+			foreach (var am in AllMeasures)
+			{
+				var child = new XElement("Measure");
+				child.Add(new XAttribute("Id", am.Id));
+				child.Add(new XAttribute("Name", am.Name));
+				child.Add(new XAttribute("Value", am.Val));
+				child.Add(new XAttribute("Date", am.Date.ToString()));
+				root.Add(child);
+			}
+
+			root.Save(Core.Settings.MeasuresXML);
+		}
+
+		//---------------------------MEDIDAS---------------------------
 
 	}
 }
