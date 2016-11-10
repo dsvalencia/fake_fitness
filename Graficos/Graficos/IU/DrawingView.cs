@@ -26,6 +26,7 @@ namespace Graficos
 			this.SetDiario(diary);
 			this.SetMes();
 
+
 		}
 
 		private void Build()
@@ -74,13 +75,13 @@ namespace Graficos
 			this.WindowPosition = Gtk.WindowPosition.CenterOnParent;
 
 
-			this.Resize(800, 700);
+			this.Resize(400, 200);
 			this.SetGeometryHints(
 			this,
 			new Gdk.Geometry()
 			{
-				MinWidth = 800,
-				MinHeight = 700
+				MinWidth = 400,
+				MinHeight = 200
 			},
 			Gdk.WindowHints.MinSize
 		);
@@ -98,7 +99,7 @@ namespace Graficos
 			actEjerTime.Activated += (obj, evt) => this.onTimeActivities();
 
 
-			actEjerActivities = new Gtk.Action("ViewEjerActivities", "Actividades de Ejercicio", "Ver numero ejercicios", null);
+			actEjerActivities = new Gtk.Action("ViewEjerActivities", "Número de Actividades", "Ver numero ejercicios", null);
 			actEjerActivities.Activated += (obj, evt) => this.onNumberActivities();
 
 

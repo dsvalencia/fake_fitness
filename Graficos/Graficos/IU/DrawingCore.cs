@@ -5,26 +5,29 @@ namespace Graficos
 {
 	public partial class Drawing
 	{
-		private int[] dataArray = new int[31];
-		GraphicsCore core;
+		private int[] dataArray = new int[31]; //Array de datos a mostrar en gráficas
+		DataGraphicsCore core;
 
-	
+		//Función para cargar nuevas Listas de actividades y medidas
 		public void SetDiario(Diary diary)
 		{
-			 core= new GraphicsCore(diary);
+			 core= new DataGraphicsCore(diary);
 		}
+		//Función para cambiar mes activo en los gráficos 
 		public void SetMes()
 		{
 			core.SetMes(new DateTime(2016, 4, 1));		
 		}
-		private String action = "default";
+		private String action = "weight"; //acción a ejecutar, por defecto Peso 
 
 		private void OnExposeDrawingArea()
 		{
-			switch (action)
+			//Cambio de Gráficos
+
+			switch (action) //Switch decisión tipo de datos a mostrar
 			{
 
-				case "default":
+				case "weight":
 					{
 						using (var canvas = Gdk.CairoHelper.Create(this.drawingArea.GdkWindow))
 						{
@@ -33,46 +36,28 @@ namespace Graficos
 							canvas.MoveTo(0, 10);
 							canvas.ShowText(Encoding.UTF8.GetBytes("Peso".ToCharArray()));
 							canvas.LineWidth = 4;
-							canvas.MoveTo(40, 10);
-							canvas.LineTo(40, 550);
-							canvas.LineTo(450, 550);
-							canvas.MoveTo(460, 550);
+							canvas.MoveTo(10, 10);
+							canvas.LineTo(10, 120);
+							canvas.LineTo(197, 120);
+							canvas.MoveTo(199, 120);
 							canvas.ShowText(Encoding.UTF8.GetBytes("Mes".ToCharArray()));
-
-							//anotations axis x
-							for (int i = 425, j = 7; i > 25; i -= 50, j--)
-							{
-								canvas.MoveTo(i, 560);
-								canvas.ShowText(Encoding.UTF8.GetBytes("|".ToCharArray()));
-								canvas.MoveTo(i - 15, 570);
-							}
-
-							//anotations axis y 
-							for (int i = 525, j = 1; i > 25; i -= 50, j++)
-							{
-								canvas.MoveTo(35, i);
-								canvas.ShowText(Encoding.UTF8.GetBytes("-".ToCharArray()));
-								canvas.MoveTo(20, i);
-								canvas.ShowText(Encoding.UTF8.GetBytes((j * 6).ToString().ToCharArray()));
-							}
-
 
 							canvas.Stroke();
 
 							// Data
 							canvas.LineWidth = 3;
 							canvas.SetSourceRGBA(255, 0, 0, 255);
-							canvas.MoveTo(40, 550);
+							canvas.MoveTo(10, 120);
 							for (int i = 0; i < 31; i++)
 							{
 								if (dataArray[i] != 0)
 								{
-									canvas.LineTo(75 + 50 * i, 550 - dataArray[i]);
+									canvas.LineTo(16 + 6 * i, 120 - dataArray[i]);
 								}
 								else {
 									int previus = i;
 									while (dataArray[previus] == 0 && previus > 0) { previus--; }
-									canvas.LineTo(75 + 14 * i, 550 - dataArray[previus]);
+									canvas.LineTo(16 + 6* i, 120 - dataArray[previus]);
 								}
 
 
@@ -95,49 +80,32 @@ namespace Graficos
 							canvas.MoveTo(0, 10);
 							canvas.ShowText(Encoding.UTF8.GetBytes("Circunferencia Abdominal".ToCharArray()));
 							canvas.LineWidth = 4;
-							canvas.MoveTo(40, 10);
-							canvas.LineTo(40, 550);
-							canvas.LineTo(450, 550);
-							canvas.MoveTo(460, 550);
+							canvas.MoveTo(10, 10);
+							canvas.LineTo(10, 120);
+							canvas.LineTo(197, 120);
+							canvas.MoveTo(199, 120);
 							canvas.ShowText(Encoding.UTF8.GetBytes("Mes".ToCharArray()));
 
-							//anotations axis x
-							for (int i = 425, j = 7; i > 25; i -= 50, j--)
-							{
-								canvas.MoveTo(i, 560);
-								canvas.ShowText(Encoding.UTF8.GetBytes("|".ToCharArray()));
-								canvas.MoveTo(i - 15, 570);
-							}
-
-							//anotations axis y 
-							for (int i = 525, j = 1; i > 25; i -= 50, j++)
-							{
-								canvas.MoveTo(35, i);
-								canvas.ShowText(Encoding.UTF8.GetBytes("-".ToCharArray()));
-								canvas.MoveTo(20, i);
-								canvas.ShowText(Encoding.UTF8.GetBytes((j * 6).ToString().ToCharArray()));
-							}
 
 
 							canvas.Stroke();
 
 							// Data
 							canvas.LineWidth = 3;
-							canvas.SetSourceRGBA(255, 0, 0, 255);
-							canvas.MoveTo(40, 550);
+							canvas.SetSourceRGBA(0, 120, 0, 255);
+							canvas.MoveTo(10, 120);
 							for (int i = 0; i < 31; i++)
 							{
+
 								if (dataArray[i] != 0)
 								{
-									canvas.LineTo(75 + 50 * i, 550 - dataArray[i]);
+									canvas.LineTo(16 + 6 * i, 120 - dataArray[i]);
 								}
 								else {
 									int previus = i;
 									while (dataArray[previus] == 0 && previus > 0) { previus--; }
-									canvas.LineTo(75 + 14 * i, 550 - dataArray[previus]);
+									canvas.LineTo(16 + 6 * i, 120 - dataArray[previus]);
 								}
-
-
 							}
 							canvas.Stroke();
 
@@ -160,46 +128,27 @@ namespace Graficos
 
 							// Axis
 							canvas.MoveTo(0, 10);
-							canvas.ShowText(Encoding.UTF8.GetBytes("Tiempo Ejercicio".ToCharArray()));
+							canvas.ShowText(Encoding.UTF8.GetBytes("Tiempo Actividades".ToCharArray()));
 							canvas.LineWidth = 4;
-							canvas.MoveTo(40, 10);
-							canvas.LineTo(40, 550);
-							canvas.LineTo(450, 550);
-							canvas.MoveTo(460, 550);
+							canvas.MoveTo(10, 10);
+							canvas.LineTo(10, 120);
+							canvas.LineTo(197, 120);
+							canvas.MoveTo(199, 120);
 							canvas.ShowText(Encoding.UTF8.GetBytes("Mes".ToCharArray()));
 
-							//anotations axis x
-							for (int i = 425, j = 7; i > 25; i -= 50, j--)
-							{
-								canvas.MoveTo(i, 560);
-								canvas.ShowText(Encoding.UTF8.GetBytes("|".ToCharArray()));
-								canvas.MoveTo(i - 15, 570);
-							}
 
-							//anotations axis y 
-							for (int i = 525, j = 1; i > 25; i -= 50, j++)
-							{
-								canvas.MoveTo(35, i);
-								canvas.ShowText(Encoding.UTF8.GetBytes("-".ToCharArray()));
-								canvas.MoveTo(20, i);
-								canvas.ShowText(Encoding.UTF8.GetBytes((j * 6).ToString().ToCharArray()));
-							}
 
 
 							canvas.Stroke();
 
-					// Data
-					canvas.LineWidth = 3;
-					canvas.SetSourceRGBA(255, 200, 0, 255);
-					canvas.MoveTo(40, 550);
+						
 							// Data
 							canvas.LineWidth = 3;
-							canvas.SetSourceRGBA(255, 0, 0, 255);
-							canvas.MoveTo(40, 550);
+							canvas.SetSourceRGBA(255, 200, 0, 255);
+							canvas.MoveTo(10, 120);
 							for (int i = 0; i < 31; i++)
 							{
-								canvas.LineTo(75 + 14 * i, 550 - dataArray[i]);
-								canvas.ShowText(Encoding.UTF8.GetBytes(dataArray[i].ToString().ToCharArray()));
+								canvas.LineTo(16 + 6 * i, 120 - dataArray[i]/5);
 
 							}
 					canvas.Stroke();
@@ -222,42 +171,25 @@ namespace Graficos
 							canvas.MoveTo(0, 10);
 							canvas.ShowText(Encoding.UTF8.GetBytes("Numero Actividades".ToCharArray()));
 							canvas.LineWidth = 4;
-							canvas.MoveTo(40, 10);
-							canvas.LineTo(40, 550);
-							canvas.LineTo(450, 550);
-							canvas.MoveTo(460, 550);
+							canvas.MoveTo(10, 10);
+							canvas.LineTo(10, 120);
+							canvas.LineTo(197, 120);
+							canvas.MoveTo(199, 120);
 							canvas.ShowText(Encoding.UTF8.GetBytes("Mes".ToCharArray()));
 
-							//anotations axis x
-							for (int i = 425, j = 7; i > 25; i -= 50, j--)
-							{
-								canvas.MoveTo(i, 560);
-								canvas.ShowText(Encoding.UTF8.GetBytes("|".ToCharArray()));
-								canvas.MoveTo(i - 15, 570);
-							}
-
-							//anotations axis y 
-							for (int i = 525, j = 1; i > 25; i -= 50, j++)
-							{
-								canvas.MoveTo(35, i);
-								canvas.ShowText(Encoding.UTF8.GetBytes("-".ToCharArray()));
-								canvas.MoveTo(20, i);
-								canvas.ShowText(Encoding.UTF8.GetBytes((j * 6).ToString().ToCharArray()));
-							}
 
 
 							canvas.Stroke();
 
 							// Data
 							canvas.LineWidth = 3;
-							canvas.SetSourceRGBA(255, 200, 0, 255);
-							canvas.MoveTo(40, 550);
+							canvas.SetSourceRGBA(0, 0, 255, 255);
+							canvas.MoveTo(10, 120);
 							for (int i = 0; i < 31; i++)
 							{
 								Console.WriteLine(i);
 								Console.WriteLine(dataArray[i]);
-								canvas.LineTo(75 + 14 * i, 550 - dataArray[i]*30);
-								canvas.ShowText(Encoding.UTF8.GetBytes(dataArray[i].ToString().ToCharArray()));
+								canvas.LineTo(16 + 6 * i, 120 - dataArray[i]*6);
 
 							}
 							canvas.Stroke();
@@ -277,42 +209,25 @@ namespace Graficos
 
 							// Axis
 							canvas.MoveTo(0, 10);
-							canvas.ShowText(Encoding.UTF8.GetBytes("Distancia Ejercicio".ToCharArray()));
+							canvas.ShowText(Encoding.UTF8.GetBytes("Distancia Actividades".ToCharArray()));
 							canvas.LineWidth = 4;
-							canvas.MoveTo(40, 10);
-							canvas.LineTo(40, 550);
-							canvas.LineTo(450, 550);
-							canvas.MoveTo(460, 550);
+							canvas.MoveTo(10, 10);
+							canvas.LineTo(10, 120);
+							canvas.LineTo(197, 120);
+							canvas.MoveTo(199, 120);
 							canvas.ShowText(Encoding.UTF8.GetBytes("Mes".ToCharArray()));
 
-							//anotations axis x
-							for (int i = 425, j = 7; i > 25; i -= 50, j--)
-							{
-								canvas.MoveTo(i, 560);
-								canvas.ShowText(Encoding.UTF8.GetBytes("|".ToCharArray()));
-								canvas.MoveTo(i - 15, 570);
-							}
-
-							//anotations axis y 
-							for (int i = 525, j = 1; i > 25; i -= 50, j++)
-							{
-								canvas.MoveTo(35, i);
-								canvas.ShowText(Encoding.UTF8.GetBytes("-".ToCharArray()));
-								canvas.MoveTo(20, i);
-								canvas.ShowText(Encoding.UTF8.GetBytes((j * 6).ToString().ToCharArray()));
-							}
 
 
 							canvas.Stroke();
 
 							// Data
 							canvas.LineWidth = 3;
-							canvas.SetSourceRGBA(255, 200, 0, 255);
-							canvas.MoveTo(40, 550);
+							canvas.SetSourceRGBA(255,30,0,255);
+							canvas.MoveTo(10, 120);
 							for (int i = 0; i < 31; i++)
 							{
-								canvas.LineTo(75 + 14 * i, 550 - dataArray[i]);
-								canvas.ShowText(Encoding.UTF8.GetBytes(dataArray[i].ToString().ToCharArray()));
+								canvas.LineTo(16 + 6 * i, 120 - dataArray[i]/5);
 
 							}
 							canvas.Stroke();
@@ -322,45 +237,49 @@ namespace Graficos
 						}
 						break;
 					}
-		}
+				}
 			}
+
+		//Accion Botón Tiempo de Actividades
 		void onTimeActivities()
 		{
 			dataArray = core.analisePetition("Activity", 0);
 			action = "TimeActivities";
 			OnExposeDrawingArea();
-			this.Resize(800, 700);
 		}
 
+		//Accion Botón Circunferencia Abdominal
 		void onAbdomen()
 		{	dataArray = core.analisePetition("BodyMeasures", 1);
 			action = "abCirc";
 			OnExposeDrawingArea();
-			this.Resize(800, 700);
 		}
 
-
+		//Accion Botón Número Actividades
 
 		void onNumberActivities()
 		{
 			dataArray = core.analisePetition("Activity", 1);
 			action = "NumberActivities";
 			OnExposeDrawingArea();
-			this.Resize(800, 700);
 		}
+
+		//Accion Botón Distancia Actividades
 
 		void onDistanceActivities()
 		{
 			dataArray = core.analisePetition("Activity", 2);
 			action = "DistanceActivities";
 			OnExposeDrawingArea();
-			this.Resize(800, 700);
-		}		void onPeso()
+		}		
+
+		//Accion Botón Peso
+
+		void onPeso()
 		{
 			dataArray = core.analisePetition("BodyMeasures", 0);
-			action = "default";
+			action = "weight";
 			OnExposeDrawingArea();
-			this.Resize(800, 700);
 		}
 
 	
