@@ -33,6 +33,7 @@ namespace FakeFitness.View
 		private void OnClose()
 		{
 			ExercisesListToXml();
+			MeasuresListToXml();
 			Quit();
 		}
 
@@ -75,7 +76,7 @@ namespace FakeFitness.View
 
 			// Muestra por pantalla las ocurrencias.
 			UpdateExercisesTreeView();
-			UpdateMeasuresTreeView();
+			UpdateMeasureData();
 		}
 
 		// Gestiona los cambios cuando se cambia de mes en el calendario.
@@ -121,7 +122,6 @@ namespace FakeFitness.View
 			var id = 0;
 			var meters = (short)0;
 			var minutes = (short)0;
-			var name = ExerciseName.Text;
 
 			foreach (var ae in AllExercises)
 			{
@@ -129,18 +129,18 @@ namespace FakeFitness.View
 			}
 
 			// Comprueba que en la caja de texto de Metros solo haya digitos.
-			if (ExerciseLoad.Text.All(char.IsDigit))
+			if (ExerciseDist.Text.All(char.IsDigit))
 			{
-				meters = Convert.ToInt16(ExerciseLoad.Text);
+				meters = Convert.ToInt16(ExerciseDist.Text);
 			}
 
 			// Comprueba que en la caja de texto de Minutos solo haya digitos.
-			if (ExerciseMinutes.Text.All(char.IsDigit))
+			if (ExerciseMins.Text.All(char.IsDigit))
 			{
-				minutes = Convert.ToInt16(ExerciseMinutes.Text);
+				minutes = Convert.ToInt16(ExerciseMins.Text);
 			}
 
-			AllExercises.Add(new Exercise(id, name, meters, minutes));
+			AllExercises.Add(new Exercise(id, meters, minutes));
 			RefreshView();
 		}
 
@@ -162,26 +162,20 @@ namespace FakeFitness.View
 		// ... Campos editables en el tree view.
 
 		// Cuando se edita el campo nombre.
-		private void ExercisesNameEdit(object o, Gtk.EditedArgs e)
-		{
-			var exe = AllExercises.Find(ae => ae.Id == GetIdByEditArgs(e));
-			exe.Name = e.NewText;
-			RefreshView();
-		}
 
 		// Cuando se edita el campo metros.
-		private void ExercisesLoadEdit(object o, Gtk.EditedArgs e)
+		private void ExercisesDistEdit(object o, Gtk.EditedArgs e)
 		{
 			var exe = AllExercises.Find( ae => ae.Id == GetIdByEditArgs(e) );
-			exe.Load = Convert.ToInt16(e.NewText);
+			exe.Dist = Convert.ToInt16(e.NewText);
 			RefreshView();
 		}
 
 		//Cuando se edita el campo minutos.
-		private void ExercisesMinutesEdit(object o, Gtk.EditedArgs e)
+		private void ExercisesMinsEdit(object o, Gtk.EditedArgs e)
 		{
 			var exe = AllExercises.Find(ae => ae.Id == GetIdByEditArgs(e));
-			exe.Minutes = Convert.ToInt16(e.NewText);
+			exe.Mins = Convert.ToInt16(e.NewText);
 			RefreshView();
 		}
 
@@ -191,11 +185,11 @@ namespace FakeFitness.View
 		private void UpdateExercisesTreeView()
 		{
 			// Crear una ListStore vacía.
-			var model = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(string));
+			var model = new Gtk.ListStore(typeof(string), typeof(string), typeof(string));
 
 			// Inserta a la ListStore todas las coincidencias.
 			DayExercises.ForEach(te => model.AppendValues(
-				te.Name, te.Load.ToString(), te.Minutes.ToString(), te.Date.ToString()));
+				te.Dist.ToString(), te.Mins.ToString(), te.Date.ToString()));
 
 			// Actualiza la vista del arbol con la nueva info.
 			ExercisesTreeview.Model = model;
@@ -219,12 +213,11 @@ namespace FakeFitness.View
 				foreach (var rc in RootChilds)
 				{
 					var id = Convert.ToInt32(rc.ElementAt(0).Value);
-					var name = rc.ElementAt(1).Value;
-					var meters = Convert.ToInt16(rc.ElementAt(2).Value);
-					var minutes = Convert.ToInt16(rc.ElementAt(3).Value);
-					DateTime date = Convert.ToDateTime(rc.ElementAt(4).Value);
+					var dist = Convert.ToInt16(rc.ElementAt(1).Value);
+					var mins = Convert.ToInt16(rc.ElementAt(2).Value);
+					DateTime date = Convert.ToDateTime(rc.ElementAt(3).Value);
 
-					AllExercises.Add(new Exercise(id, name, meters, minutes, date));
+					AllExercises.Add(new Exercise(id, dist, mins, date));
 				}
 			}
 		}
@@ -238,9 +231,8 @@ namespace FakeFitness.View
 			{
 				var child = new XElement("Exercise");
 				child.Add(new XAttribute("Id", ae.Id));
-				child.Add(new XAttribute("Name", ae.Name));
-				child.Add(new XAttribute("Load", ae.Load));
-				child.Add(new XAttribute("Minutes", ae.Minutes));
+				child.Add(new XAttribute("Dist", ae.Dist));
+				child.Add(new XAttribute("Mins", ae.Mins));
 				child.Add(new XAttribute("Date", ae.Date.ToString()));
 				root.Add(child);
 			}
@@ -258,74 +250,70 @@ namespace FakeFitness.View
 		// Cuando se añade un ejercicio.
 		private void MeasureAdd()
 		{
-			var id = 0;
-			var val = (short)0;
-			var name = MeasureName.Text;
-
-			foreach (var am in AllMeasures)
+			if (DayMeasures.Count() < 1)
 			{
-				if (id <= am.Id) { id = am.Id + 1; }
+				var id = 0;
+				var weight = (short)0;
+				var size = (short)0;
+
+				foreach (var am in AllMeasures)
+				{
+					if (id <= am.Id) { id = am.Id + 1; }
+				}
+
+				// Comprueba que en la caja de texto de Peso solo haya digitos.
+				if (MeasureWeight.Text.All(char.IsDigit))
+				{
+					weight = Convert.ToInt16(MeasureWeight.Text);
+				}
+
+				// Comprueba que en la caja de texto de Talla solo haya digitos.
+				if (MeasureSize.Text.All(char.IsDigit))
+				{
+					size = Convert.ToInt16(MeasureSize.Text);
+				}
+				var m = new Measure(id, weight, size);
+				AllMeasures.Add(m);
+			}
+			else
+			{
+				var m = DayMeasures[0];
+				// Comprueba que en la caja de texto de Peso solo haya digitos.
+				if (MeasureWeight.Text.All(char.IsDigit))
+				{
+					m.Weight = Convert.ToInt16(MeasureWeight.Text);
+				}
+
+				// Comprueba que en la caja de texto de Talla solo haya digitos.
+				if (MeasureSize.Text.All(char.IsDigit))
+				{
+					m.Size = Convert.ToInt16(MeasureSize.Text);
+				}
 			}
 
-			// Comprueba que en la caja de texto de Value solo haya digitos.
-			if (MeasureValue.Text.All(char.IsDigit))
+			UpdateMeasureData();
+			RefreshView();
+		}
+
+		private void UpdateMeasureData()
+		{
+			if (DayMeasures.Count > 0)
 			{
-				val = Convert.ToInt16(MeasureValue.Text);
+				var m = DayMeasures[0];
+				MeasureWeight.DeleteText(0, MeasureWeight.Text.Length);
+				MeasureWeight.InsertText(m.Weight.ToString());
+				MeasureSize.DeleteText(0, MeasureSize.Text.Length);
+				MeasureSize.InsertText(m.Size.ToString());
 			}
-
-			AllMeasures.Add(new Measure(id, name, val));
-			RefreshView();
-		}
-
-		// Cuando se borra una medida.
-		private void MeasureDelete(int ActiveRow)
-		{
-			// Obtiene la medida en base a la fila seleccionada.
-			var measure =
-				AllMeasures.Find(am =>
-					am.Id == DayMeasures[ActiveRow].Id);
-
-			// Borrar la medida seleccionada.
-			AllMeasures.Remove(measure);
-
-			// Actualiza los cambios en la vista.
-			RefreshView();
-		}
-
-		// ... Campos editables en el tree view.
-
-		// Cuando se edita el campo nombre.
-		private void MeasureNameEdit(object o, Gtk.EditedArgs e)
-		{
-			var measure = AllMeasures.Find(am => am.Id == GetIdByEditArgs(e));
-			measure.Name = e.NewText;
-			RefreshView();
-		}
-
-		// Cuando se edita el campo valor.
-		private void MeasureValueEdit(object o, Gtk.EditedArgs e)
-		{
-			var measure = AllMeasures.Find(am => am.Id == GetIdByEditArgs(e));
-			measure.Val = Convert.ToInt16(e.NewText);
-			RefreshView();
+			else
+			{
+				MeasureWeight.DeleteText(0, MeasureWeight.Text.Length);
+				MeasureSize.DeleteText(0, MeasureSize.Text.Length);
+			}
+				
 		}
 
 		// ... Utilidades Listas y XML.
-
-		// Carga la Lista en el Model del TreeView.
-		private void UpdateMeasuresTreeView()
-		{
-			// Crear una ListStore vacía.
-			var model = new Gtk.ListStore(typeof(string), typeof(string), typeof(string));
-
-			// Inserta a la ListStore todas las coincidencias
-			DayMeasures.ForEach(tm => model.AppendValues(
-				tm.Name, tm.Val.ToString(), tm.Date.ToString()));
-
-			// Actualiza la vista del arbol con la nueva info.
-			MeasuresTreeview.Model = model;
-		}
-
 		// Cargar del XML a una Lista de ejercicios.
 		private void XmlToMeasuresList()
 		{
@@ -344,11 +332,11 @@ namespace FakeFitness.View
 				foreach (var rc in RootChilds)
 				{
 					var id = Convert.ToInt32(rc.ElementAt(0).Value);
-					var name = rc.ElementAt(1).Value;
-					var val = Convert.ToInt16(rc.ElementAt(2).Value);
+					var weight = Convert.ToInt16(rc.ElementAt(1).Value);
+					var size = Convert.ToInt16(rc.ElementAt(2).Value);
 					DateTime date = Convert.ToDateTime(rc.ElementAt(3).Value);
 
-					AllMeasures.Add(new Measure(id, name, val, date));
+					AllMeasures.Add(new Measure(id, weight, size, date));
 				}
 			}
 		}
@@ -362,8 +350,8 @@ namespace FakeFitness.View
 			{
 				var child = new XElement("Measure");
 				child.Add(new XAttribute("Id", am.Id));
-				child.Add(new XAttribute("Name", am.Name));
-				child.Add(new XAttribute("Value", am.Val));
+				child.Add(new XAttribute("Weight", am.Weight));
+				child.Add(new XAttribute("Size", am.Size));
 				child.Add(new XAttribute("Date", am.Date.ToString()));
 				root.Add(child);
 			}

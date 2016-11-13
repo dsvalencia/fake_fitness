@@ -9,8 +9,8 @@ namespace FakeFitness.Core
 	{
 		// VARS ...
 		private int id;
-		private string name;
-		private short val;
+		private short weight;
+		private short size;
 		private DateTime date;
 
 		// PROPS ...
@@ -20,16 +20,16 @@ namespace FakeFitness.Core
 			set { id = value; }
 		}
 
-		public string Name
+		public short Weight
 		{
-			get { return name; }
-			set { name = value; }
+			get { return weight; }
+			set { weight = value; }
 		}
 
-		public short Val
+		public short Size
 		{
-			get { return val; }
-			set { val = value; }
+			get { return size; }
+			set { size = value; }
 		}
 
 		public DateTime Date
@@ -43,20 +43,20 @@ namespace FakeFitness.Core
 		// CONSTRUCTOR ...
 
 		// ... Para creación inicial.
-		public Measure(int id, string name, short val)
+		public Measure(int id, short weight, short size)
 		{
 			this.Id = id;
-			this.Name = name;
-			this.Val = val;
+			this.Weight = weight;
+			this.Size = size;
 			this.Date = DateTime.Now;
 		}
 
 		// ... Para utilizar en la carga del XML.
-		public Measure(int id, string name, short val, DateTime date)
+		public Measure(int id, short weight, short size, DateTime date)
 		{
 			this.Id = id;
-			this.Name = name;
-			this.Val = val;
+			this.Weight = weight;
+			this.Size = size;
 			this.Date = date;
 		}
 	}
