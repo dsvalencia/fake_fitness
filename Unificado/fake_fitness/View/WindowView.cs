@@ -272,7 +272,7 @@ namespace FakeFitness.View
 			// Tree Columns Append.
 			MeasuresTreeview.AppendColumn("Name", NameRender, "text", 0);
 			MeasuresTreeview.AppendColumn("Value", ValueRender, "text", 1);
-			MeasuresTreeview.AppendColumn("Date", new Gtk.CellRendererText(), "text", 3);
+			MeasuresTreeview.AppendColumn("Date", new Gtk.CellRendererText(), "text", 2);
 
 			// Fill Boxes.
 			TreeScroll.Add(MeasuresTreeview);
