@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using System.Linq;
 using System.Xml.Linq;
 using System.Collections.Generic;
@@ -10,6 +11,9 @@ namespace FakeFitness.View
 {
 	public partial class MainWindow
 	{
+		
+		//----------------------------GLOBALES-------------------------
+
 		private List<Exercise> AllExercises = new List<Exercise>();
 		private List<Exercise> DayExercises = new List<Exercise>();
 		private List<Exercise> MonthExercises = new List<Exercise>();
@@ -17,6 +21,14 @@ namespace FakeFitness.View
 		private List<Measure> AllMeasures = new List<Measure>();
 		private List<Measure> DayMeasures = new List<Measure>();
 		private List<Measure> MonthMeasures = new List<Measure>();
+
+		private int[] GraphExercisesNum = new int[31];
+		private int[] GraphExercisesTime = new int[31];
+		private int[] GraphExercisesDist = new int[31];
+		private int[] GraphMeasuresSize = new int[31];
+		private int[] GraphMeasuresWeight = new int[31];
+
+		//----------------------------GLOBALES-------------------------
 
 
 		//-----------------------GENERALES/COMUNES---------------------
@@ -52,7 +64,6 @@ namespace FakeFitness.View
 			return DayExercises[ActiveRow].Id;
 		}
 		//-----------------------GENERALES/COMUNES---------------------
-
 
 
 		//--------------------------CALENDARIO-------------------------
@@ -99,6 +110,8 @@ namespace FakeFitness.View
 
 			// Marcar las del nuevo mes
 			CalendarMarkMonth();
+			MonthExerciseData();
+			MonthMeasureData();
 		}
 
 		// Marca los días con entrada de medidas o ejercicios.
@@ -109,7 +122,6 @@ namespace FakeFitness.View
 		}
 
 		//--------------------------CALENDARIO-------------------------
-
 
 
 		//--------------------------EJERCICIOS-------------------------
@@ -141,6 +153,9 @@ namespace FakeFitness.View
 			}
 
 			AllExercises.Add(new Exercise(id, meters, minutes));
+
+			ExerciseMins.DeleteText(0, ExerciseMins.Text.Length);
+			ExerciseDist.DeleteText(0, ExerciseDist.Text.Length);
 			RefreshView();
 		}
 
@@ -275,6 +290,7 @@ namespace FakeFitness.View
 				var m = new Measure(id, weight, size);
 				AllMeasures.Add(m);
 			}
+
 			else
 			{
 				var m = DayMeasures[0];
@@ -295,6 +311,7 @@ namespace FakeFitness.View
 			RefreshView();
 		}
 
+		// Actualiza los entrys de las medidas.
 		private void UpdateMeasureData()
 		{
 			if (DayMeasures.Count > 0)
@@ -360,6 +377,121 @@ namespace FakeFitness.View
 		}
 
 		//---------------------------MEDIDAS---------------------------
+
+
+		//---------------------------GRAFICO---------------------------
+
+		private int[] CurrentGraphData = new int[31];
+
+		// Carga por separado los distintos datos de ejercicios para su graficado.
+		private void MonthExerciseData()
+		{
+			GraphExercisesNum = new int[31];
+			GraphExercisesTime = new int[31];
+			GraphExercisesDist = new int[31];
+
+			if (MonthExercises.Count > 0)
+			{
+				foreach (var ae in MonthExercises)
+				{
+					GraphExercisesNum[ae.Date.Day - 1] =
+						GraphExercisesNum[ae.Date.Day - 1] + 1;
+
+					GraphExercisesTime[ae.Date.Day - 1] =
+						GraphExercisesTime[ae.Date.Day - 1] + Convert.ToInt32(ae.Mins/60);
+
+					GraphExercisesDist[ae.Date.Day - 1] =
+						GraphExercisesDist[ae.Date.Day - 1] + Convert.ToInt32(ae.Dist/1000);
+				}
+			}
+
+		}
+
+		// Carga por separado los distintos datos de medidas para su graficado.
+		private void MonthMeasureData()
+		{
+			GraphMeasuresSize = new int[31];
+			GraphMeasuresWeight = new int[31];
+
+			if (MonthMeasures.Count > 0)
+			{
+				foreach (var mm in MonthMeasures)
+				{
+					GraphMeasuresWeight[mm.Date.Day - 1] =
+						GraphMeasuresWeight[mm.Date.Day - 1] + Convert.ToInt32(mm.Weight/4);
+
+					GraphMeasuresSize[mm.Date.Day - 1] =
+						GraphMeasuresSize[mm.Date.Day - 1] + Convert.ToInt32(mm.Size/4);
+				}	
+			}
+
+		}
+
+
+		private void GraphicDist()
+		{
+			CurrentGraphData = GraphExercisesDist;
+			RenderGraph("KiloMeters", 255, 30, 0);
+		}
+
+		private void GraphicTime()
+		{
+			CurrentGraphData = GraphExercisesTime;
+			RenderGraph("Hours", 0, 0, 255);
+		}
+
+		private void GraphicWeight()
+		{
+			CurrentGraphData = GraphMeasuresWeight;
+			RenderGraph("Weight", 255, 0, 0);
+		}
+
+		private void GraphicSize()
+		{
+			CurrentGraphData = GraphMeasuresSize;
+			RenderGraph("Size", 0, 120, 0);
+		}
+
+
+		private void RenderGraph(string SectionSTR, int R, int G, int B)
+		{
+			using (var canvas = Gdk.CairoHelper.Create(DrawingArea.GdkWindow))
+			{
+				DrawingArea.GdkWindow.Clear();
+
+
+				// Axis.
+				canvas.MoveTo(5, 15);
+				canvas.ShowText(Encoding.UTF8.GetBytes(SectionSTR.ToCharArray()));
+				canvas.LineWidth = 2;
+				canvas.MoveTo(20, 30);
+				canvas.LineTo(20, 90);
+				canvas.LineTo(190, 90);
+				canvas.MoveTo(200, 90);
+				canvas.ShowText(Encoding.UTF8.GetBytes("D".ToCharArray()));
+
+				canvas.Stroke();
+
+
+				// Data
+				canvas.LineWidth = 4;
+				canvas.SetSourceRGBA(R, G, B, 255);
+				canvas.MoveTo(20, 90);
+
+				for (int i = 0; i < 31; i++)
+				{
+					canvas.LineTo(16 + 6 * i, 90 - CurrentGraphData[i]);
+				}
+
+				canvas.Stroke();
+
+
+				// Clean
+				canvas.GetTarget().Dispose();
+			}
+		}
+
+		//---------------------------GRAFICO---------------------------
 
 	}
 }

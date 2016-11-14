@@ -5,11 +5,11 @@ namespace FakeFitness.View
 {
 	public partial class MainWindow : Gtk.Window
 	{
-		// Caja principal.
-		private Gtk.VBox MainBox;
-		
 		// Variables GTK vista calendario.
 		private Gtk.Calendar Calendar;
+
+		// Variables GTK vista grafico.
+		private Gtk.DrawingArea DrawingArea;
 
 		// Variables GTK vista ejerecicicios.
 		private Gtk.Entry ExerciseDist;
@@ -23,6 +23,7 @@ namespace FakeFitness.View
 		
 		public MainWindow() : base(Gtk.WindowType.Toplevel)
 		{
+			this.Title = "••• DIA :: FakeFitness •••";
 			Build();
 			OnInit();
 		}
@@ -59,8 +60,8 @@ namespace FakeFitness.View
 
 			// ----------------------TAMANHO-----------------------
 
-			SetGeometryHints(
-				this, new Gdk.Geometry() { MinWidth = 400, MinHeight = 400 }, Gdk.WindowHints.MinSize);
+			//SetGeometryHints(
+			//	this, new Gdk.Geometry() { MinWidth = 400, MinHeight = 400 }, Gdk.WindowHints.MinSize);
 
 			// ----------------------EVENTOS-----------------------
 
@@ -68,7 +69,8 @@ namespace FakeFitness.View
 
 			// ----------------------VISTAS------------------------
 
-			MainBox = new Gtk.VBox(false, 5);
+			var Layout = new Gtk.HBox(false, 5);
+			var MainBox = new Gtk.VBox(false, 5);
 
 			MainBox.Add( new Gtk.HSeparator() );
 			MainBox.Add( CalendarView() );
@@ -78,8 +80,15 @@ namespace FakeFitness.View
 			MainBox.Add( ExercisesListView() );
 			MainBox.Add( new Gtk.HSeparator() );
 			MainBox.Add( ExercisesAddView() );
+			MainBox.Add( new Gtk.HSeparator() );
+			MainBox.Add( GraphicView() );
+			MainBox.Add( new Gtk.HSeparator() );
 
-			this.Add(MainBox);
+			Layout.Add( new Gtk.VSeparator() );
+			Layout.Add( MainBox );
+			Layout.Add( new Gtk.VSeparator() );
+
+			this.Add(Layout);
 		}
 
 		private Gtk.VBox CalendarView()
@@ -204,16 +213,54 @@ namespace FakeFitness.View
 
 			// -------------------COMPOSICION------------------------
 
-			// Fill vboxs.
+			// Compose main Box.
 			ViewBox.Add(WeightLabel);
 			ViewBox.Add(MeasureWeight);
 			ViewBox.Add(SizeLabel);
 			ViewBox.Add(MeasureSize);
-
-			// Compose main vBox.
 			ViewBox.Add(SaveButton);
 
-			// Add main box to the window
+			// Add main box to the window.
+			return ViewBox;
+		}
+
+		private Gtk.HBox GraphicView()
+		{
+			var RightBox = new Gtk.VBox(false, 5);
+			var ViewBox = new Gtk.HBox(false, 5);
+			var Scrollable = new Gtk.ScrolledWindow();
+
+			// ------------------INICIALIZACION---------------------
+
+			var WeightButton = new Gtk.Button("WEIGHT");
+			WeightButton.Clicked += (o, args) => GraphicWeight();
+
+			var SizeButton = new Gtk.Button("SIZE");
+			SizeButton.Clicked += (o, args) => GraphicSize();
+
+			var TimeButton = new Gtk.Button("TIME");
+			TimeButton.Clicked += (o, args) => GraphicTime();
+
+			var DistButton = new Gtk.Button("DIST");
+			DistButton.Clicked += (o, args) => GraphicDist();
+
+
+			// -------------------COMPOSICION------------------------
+
+			DrawingArea = new Gtk.DrawingArea();
+			Scrollable.AddWithViewport( DrawingArea );
+
+			// Fill Boxs.
+			RightBox.Add(WeightButton);
+			RightBox.Add(SizeButton);
+			RightBox.Add(TimeButton);
+			RightBox.Add(DistButton);
+
+			// Compose main Box.
+			ViewBox.Add(Scrollable);
+			ViewBox.Add(RightBox);
+
+			// Add main box to the window.
 			return ViewBox;
 		}
 	}
