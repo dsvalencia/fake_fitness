@@ -1,11 +1,12 @@
 # Fake Fitness.
 
-Aplicación para el control personal de la condición física y realizacion de actividades deportivas.
+![screenshot](screenshot.png)
 
-> Tecnologías utilizadas:
-> - C#
-> - Gtk.
-> - GtkSharp.
+## Racionalización.
+- Aplicación para el control personal del físico.
+- Primer contacto con las tecnologías utilizadas y stand-alone.
+
+> **Tecnologías utilizadas:** *CSharp, GtkSharp.*
 
 ## Capacidades.
 - Gestión de medidas.

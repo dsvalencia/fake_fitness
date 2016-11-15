@@ -1,2 +1,7 @@
-bin/Debug/*.exe*
+# Folders
 obj/
+
+# Files
+*.userprefs
+bin/Debug/*.exe*
+
