@@ -14,12 +14,18 @@ namespace FakeFitness.View
 		
 		//----------------------------GLOBALES-------------------------
 
+		/// <param name=”AllExercises”>Lista de todos los ejercicios almacenados</param>
 		private List<Exercise> AllExercises = new List<Exercise>();
+		/// <param name=”DayExercises”>Lista de todos los ejercicios almacenados en un dia</param>
 		private List<Exercise> DayExercises = new List<Exercise>();
+		/// <param name=”MonthExercises”>Lista de todos los ejercicios almacenados en un mes</param>
 		private List<Exercise> MonthExercises = new List<Exercise>();
 
+		/// <param name=”AllMesaures”>Lista de todas las medidas almacenadas</param>
 		private List<Measure> AllMeasures = new List<Measure>();
+		/// <param name=”DayMeasures”>Lista de todas las medidas almacenadas en un dia</param>
 		private List<Measure> DayMeasures = new List<Measure>();
+		/// <param name=”MonthMeasures”>Lista de todas las medidas almacenadas en un mes</param>
 		private List<Measure> MonthMeasures = new List<Measure>();
 
 		private int[] GraphExercisesNum = new int[31];
@@ -31,9 +37,12 @@ namespace FakeFitness.View
 		//----------------------------GLOBALES-------------------------
 
 
+
 		//-----------------------GENERALES/COMUNES---------------------
 
-		// Cuando la aplicación se abre.
+		/// <summary>
+		/// ACCION: Gestiona el inicio de la aplicacion.
+		/// </summary>
 		private void OnInit()
 		{
 			XmlToExercisesList();
@@ -41,7 +50,9 @@ namespace FakeFitness.View
 			RefreshView();
 		}
 
-		// Cuando se cierra la aplicacion.
+		/// <summary>
+		/// ACCION: Gestiona el cierre de la aplicacion.
+		/// </summary>
 		private void OnClose()
 		{
 			ExercisesListToXml();
@@ -49,7 +60,9 @@ namespace FakeFitness.View
 			Quit();
 		}
 
-		// Recarga la vista con los cambios sufridos.
+		/// <summary>
+		/// ACCION: Gestiona la modificacion de la vista de la aplicacion.
+		/// </summary>
 		private void RefreshView()
 		{
 			CalendarMarkMonth();
@@ -68,53 +81,67 @@ namespace FakeFitness.View
 
 		//--------------------------CALENDARIO-------------------------
 
-		// Gestiona los cambios al clicar en un día concreto.
+		/// <summary>
+		/// ACCION: Gestiona los cambios al clicar en un día concreto.
+		/// REALIZA: Recupera todos los ejercicios del día y los guarda en <see cref="DayExercises"></see>.
+		/// REALIZA: Recupera todas las medidas del día y las guarda en <see cref="DayMeasures"></see>.
+		/// DEVUELVE: Muestra en la lista de ejercicios y en la grafica. //Seria las otras finciones realiza 
+		/// </summary>
 		private void CalendarDay()
 		{
-			// Recupera todos los ejercicios del día y los guarda en una lista de la clase.
+			
 			DayExercises =
 				AllExercises.FindAll(ae =>
 					ae.Date.Day == Calendar.Day
 					&& ae.Date.Month == Calendar.Month+1
 					&& ae.Date.Year == Calendar.Year);
 
-			// Recupera todas las medidas del día y las guarda en una lista de la clase.
 			DayMeasures =
 				AllMeasures.FindAll(am =>
 					am.Date.Day == Calendar.Day
 					&& am.Date.Month == Calendar.Month + 1
 					&& am.Date.Year == Calendar.Year);
 
-			// Muestra por pantalla las ocurrencias.
 			UpdateExercisesTreeView();
 			UpdateMeasureData();
 		}
-
-		// Gestiona los cambios cuando se cambia de mes en el calendario.
+		/// <summary>
+		/// ACCION: Gestiona los cambios cuando se cambia de mes en el calendario.
+		/// REALIZA: Recupera todos los ejercicios del mes y los guarda en <see cref="MonthExercises"></see>.
+		/// REALIZA: Recupera todas las medidas del mes y las guarda en <see cref="MonthMesaures"></see>.
+		/// REALIZA: Elimina las marcas en los dias del calendario
+		/// DEVUELVE: Recalca en negro los días que tienen una o varias entradas de medidas o ejercicios
+		/// </summary>
 		private void CalendarMonth()
 		{
-			// Recupera todos los ejercicios del mes y los guarda en una lista de la clase.
 			MonthExercises =
 				AllExercises.FindAll(ae =>
 					ae.Date.Month == Calendar.Month + 1
 					&& ae.Date.Year == Calendar.Year);
 
-			// Recupera todas las medidas del mes y las guarda en una lista de la clase.
 			MonthMeasures =
 				AllMeasures.FindAll(am =>
 					am.Date.Month == Calendar.Month + 1
 					&& am.Date.Year == Calendar.Year);
 
-			// Borra todas las marcas
-			for (uint i = 0; i <= 31; i++) { Calendar.UnmarkDay(i); }
-
-			// Marcar las del nuevo mes
+			CalendarCleanMonth();
 			CalendarMarkMonth();
 			MonthExerciseData();
 			MonthMeasureData();
 		}
 
-		// Marca los días con entrada de medidas o ejercicios.
+		/// <summary>
+		/// ACCION: Eliminina las marcas que tienen los dias en el calendario
+		/// </summary>
+		private void CalendarCleanMonth(){
+			for (uint i = 0; i <= 31; i++){ 
+				Calendar.UnmarkDay(i); 
+			}
+		}
+
+		/// <summary>
+		/// ACCION: Recalca en negro los días que tienen una o varias entradas de medidas o ejercicios.
+		/// </summary>
 		private void CalendarMarkMonth()
 		{
 			MonthExercises.ForEach(me => Calendar.MarkDay((uint)me.Date.Day));
@@ -122,6 +149,7 @@ namespace FakeFitness.View
 		}
 
 		//--------------------------CALENDARIO-------------------------
+
 
 
 		//--------------------------EJERCICIOS-------------------------
