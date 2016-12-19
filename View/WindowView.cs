@@ -104,9 +104,9 @@ namespace FakeFitness.View
 			this.Add(Layout);
 		}
 		/// <summary>
-		/// Genera la vista de calendario de la aplicación 
+		/// Genera la vista de <see cref="Calendar"></see> de la aplicación 
 		/// </summary>
-		/// <returns>La vista en que se muestra el calendario</returns>
+		/// <returns>La vista en que se muestra el <see cref="Calendar"></see></returns>
 		private Gtk.VBox CalendarView()
 		{
 			var ViewBox = new Gtk.VBox(false, 5);
@@ -123,9 +123,9 @@ namespace FakeFitness.View
 			return ViewBox;
 		}
 		/// <summary>
-		/// Calcula la vista que mostrará la lista de ejercicios  
+		/// Calcula la vista que mostrará la lista de ejercicios (<see cref="ExerciseTreeView"></see>). 
 		/// </summary>
-		/// <returns>La vista en la que se muestra una lista de los ejercicios </returns>
+		/// <returns>La vista en la que se muestra una lista de los ejercicios (<see cref="ExerciseTreeView"></see>).</returns>
 		private Gtk.VBox ExercisesListView()
 		{
 			var ViewBox = new Gtk.VBox(false, 5);
@@ -171,8 +171,8 @@ namespace FakeFitness.View
 			return ViewBox;
 		}
 		/// <summary>
-		/// Genera la vista que añade ejercicios nuevos
-		 /// </summary>
+		/// Genera la vista que añade ejercicios nuevos que cotendrán los parametros: <see cref="ExerciseDist"></see> y <see cref="ExerciseMin"></see> 
+		/// </summary>
 		/// <returns>Muestra la vista que permite añadir un ejercicio</returns>
 		private Gtk.HBox ExercisesAddView()
 		{
@@ -211,7 +211,7 @@ namespace FakeFitness.View
 			return ViewBox;
 		}
 		/// <summary>
-		/// Genera la vista que añade medidas nuevas
+		/// Genera la vista que añade medidas nuevas que cotendrán los parametros: <see cref="MesureWeight"></see> y <see cref="MesureSize"></see> 
 		/// </summary>
 		/// <returns>Muestra la vista que permite añadir una medida</returns>
 		private Gtk.HBox MeasureView()
@@ -249,7 +249,7 @@ namespace FakeFitness.View
 			return ViewBox;
 		}
 		/// <summary>
-		/// Genera la vista que muestra el gráfico en la aplicación 
+		/// Genera la vista que muestra el gráfico en la aplicación actualizando el <see cref="DrawingArea"></see>
 		/// </summary>
 		/// <returns>La vista que contiene el gráfico a mostrar</returns>
 		private Gtk.HBox GraphicView()
