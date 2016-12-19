@@ -14,24 +14,29 @@ namespace FakeFitness.View
 		
 		//----------------------------GLOBALES-------------------------
 
-		/// <param name=”AllExercises”>Lista de todos los ejercicios almacenados</param>
+		/// Lista de todos los ejercicios almacenados.
 		private List<Exercise> AllExercises = new List<Exercise>();
-		/// <param name=”DayExercises”>Lista de todos los ejercicios almacenados en un dia</param>
+		/// Lista de todos los ejercicios almacenados en un dia.
 		private List<Exercise> DayExercises = new List<Exercise>();
-		/// <param name=”MonthExercises”>Lista de todos los ejercicios almacenados en un mes</param>
+		/// Lista de todos los ejercicios almacenados en un mes.
 		private List<Exercise> MonthExercises = new List<Exercise>();
 
-		/// <param name=”AllMesaures”>Lista de todas las medidas almacenadas</param>
+		/// Lista de todas las medidas almacenadas.
 		private List<Measure> AllMeasures = new List<Measure>();
-		/// <param name=”DayMeasures”>Lista de todas las medidas almacenadas en un dia</param>
+		/// Lista de todas las medidas almacenadas en un dia.
 		private List<Measure> DayMeasures = new List<Measure>();
-		/// <param name=”MonthMeasures”>Lista de todas las medidas almacenadas en un mes</param>
+		/// Lista de todas las medidas almacenadas en un mes.
 		private List<Measure> MonthMeasures = new List<Measure>();
 
+		/// Array con los datos del número de ejercicios realizados.
 		private int[] GraphExercisesNum = new int[31];
+		/// Array con los datos del tiempo invertido en ejercicios.
 		private int[] GraphExercisesTime = new int[31];
+		/// Array con los datos de las distancias de los ejercicios.
 		private int[] GraphExercisesDist = new int[31];
+		/// Array con los datos de las medidas tomadas.
 		private int[] GraphMeasuresSize = new int[31];
+		/// Array con los datos de la talla personal.
 		private int[] GraphMeasuresWeight = new int[31];
 
 		//----------------------------GLOBALES-------------------------
@@ -41,8 +46,9 @@ namespace FakeFitness.View
 		//-----------------------GENERALES/COMUNES---------------------
 
 		/// <summary>
-		/// ACCION: Gestiona el inicio de la aplicacion.
+		/// Gestiona el inicio de la aplicación.
 		/// </summary>
+		/// <returns>void</returns>
 		private void OnInit()
 		{
 			XmlToExercisesList();
@@ -51,8 +57,9 @@ namespace FakeFitness.View
 		}
 
 		/// <summary>
-		/// ACCION: Gestiona el cierre de la aplicacion.
+		/// Gestiona el cierre de la aplicacion.
 		/// </summary>
+		/// <returns>void</returns>
 		private void OnClose()
 		{
 			ExercisesListToXml();
@@ -61,8 +68,9 @@ namespace FakeFitness.View
 		}
 
 		/// <summary>
-		/// ACCION: Gestiona la modificacion de la vista de la aplicacion.
+		/// Gestiona la modificacion de la vista de la aplicacion.
 		/// </summary>
+		/// <returns>void</returns>
 		private void RefreshView()
 		{
 			CalendarMarkMonth();
@@ -70,6 +78,11 @@ namespace FakeFitness.View
 			CalendarDay();
 		}
 
+		/// <summary>
+		/// Obtiene el id del elemento que se edita en un TreeView.
+		/// </summary>
+		/// <param name=”e”>De tipo "Gtk.EditedArgs" es el elemento que se está editando.</param>
+		/// <returns>El id (int) asociado al elemento.</returns>
 		private int GetIdByEditArgs(Gtk.EditedArgs e)
 		{
 			var RowPath = new Gtk.TreePath(e.Path);
@@ -82,14 +95,15 @@ namespace FakeFitness.View
 		//--------------------------CALENDARIO-------------------------
 
 		/// <summary>
-		/// ACCION: Gestiona los cambios al clicar en un día concreto.
-		/// REALIZA: Recupera todos los ejercicios del día y los guarda en <see cref="DayExercises"></see>.
-		/// REALIZA: Recupera todas las medidas del día y las guarda en <see cref="DayMeasures"></see>.
-		/// DEVUELVE: Muestra en la lista de ejercicios y en la grafica. //Seria las otras finciones realiza 
+		/// Gestiona los cambios al clicar en un día concreto.
+		/// Recupera todos los ejercicios del día y los guarda en <see cref="DayExercises"></see>.
+		/// Recupera todas las medidas del día y las guarda en <see cref="DayMeasures"></see>.
+		/// Las muestra en la lista de ejercicios y en la grafica.
 		/// </summary>
+		/// <returns>void</returns>
 		private void CalendarDay()
 		{
-			
+
 			DayExercises =
 				AllExercises.FindAll(ae =>
 					ae.Date.Day == Calendar.Day
@@ -106,12 +120,13 @@ namespace FakeFitness.View
 			UpdateMeasureData();
 		}
 		/// <summary>
-		/// ACCION: Gestiona los cambios cuando se cambia de mes en el calendario.
-		/// REALIZA: Recupera todos los ejercicios del mes y los guarda en <see cref="MonthExercises"></see>.
-		/// REALIZA: Recupera todas las medidas del mes y las guarda en <see cref="MonthMesaures"></see>.
-		/// REALIZA: Elimina las marcas en los dias del calendario
-		/// DEVUELVE: Recalca en negro los días que tienen una o varias entradas de medidas o ejercicios
+		/// Gestiona los cambios cuando se cambia de mes en el calendario.
+		/// Recupera todos los ejercicios del mes y los guarda en <see cref="MonthExercises"/>.
+		/// Recupera todas las medidas del mes y las guarda en <see cref="MonthMesaures"/>.
+		/// Elimina las marcas en los dias del calendario.
+		/// Establece en negrita los días que tienen una o varias entradas de medidas o ejercicios.
 		/// </summary>
+		/// <returns>void</returns>
 		private void CalendarMonth()
 		{
 			MonthExercises =
@@ -131,8 +146,9 @@ namespace FakeFitness.View
 		}
 
 		/// <summary>
-		/// ACCION: Eliminina las marcas que tienen los dias en el calendario
+		/// Eliminina las marcas que tienen los dias en el calendario
 		/// </summary>
+		/// <returns>void</returns>
 		private void CalendarCleanMonth(){
 			for (uint i = 0; i <= 31; i++){ 
 				Calendar.UnmarkDay(i); 
@@ -140,8 +156,9 @@ namespace FakeFitness.View
 		}
 
 		/// <summary>
-		/// ACCION: Recalca en negro los días que tienen una o varias entradas de medidas o ejercicios.
+		/// Establece en negrita los días que tienen una o varias entradas de medidas o ejercicios.
 		/// </summary>
+		/// <returns>void</returns>
 		private void CalendarMarkMonth()
 		{
 			MonthExercises.ForEach(me => Calendar.MarkDay((uint)me.Date.Day));
@@ -156,7 +173,11 @@ namespace FakeFitness.View
 
 		// ... Eventos.
 
-		// Cuando se añade un ejercicio.
+		/// <summary>
+		/// Cuando se añade un ejercicio, se calcula su ID, se leen los campos <see cref="ExerciseDist"/> 
+		/// y <see cref="ExerciseMins"/>.
+		/// </summary>
+		/// <returns>void</returns>
 		private void ExerciseAdd()
 		{
 			var id = 0;
@@ -187,7 +208,11 @@ namespace FakeFitness.View
 			RefreshView();
 		}
 
-		// Cuando se borra un ejercicio.
+		/// <summary>
+		/// Cuando se borra un ejercicio, en base a la fila activa del <see cref="ExercisesTreeview"/>.
+		/// </summary>
+		/// <param name="ActiveRow">Es la fila activa de la lista de ejercicios.</param>
+		/// <returns>void</returns>
 		private void ExerciseDelete(int ActiveRow)
 		{
 			// Obtiene el ejercicio en base a la fila seleccionada.
@@ -204,9 +229,11 @@ namespace FakeFitness.View
 
 		// ... Campos editables en el tree view.
 
-		// Cuando se edita el campo nombre.
-
-		// Cuando se edita el campo metros.
+		/// <summary>
+		/// Edición de los Metros de un ejercicio (<see cref="Core.Exercise.dist"/>).
+		/// </summary>
+		/// <param name="ActiveRow">Es la fila activa de la lista de ejercicios.</param>
+		/// <returns>void</returns>
 		private void ExercisesDistEdit(object o, Gtk.EditedArgs e)
 		{
 			var exe = AllExercises.Find( ae => ae.Id == GetIdByEditArgs(e) );
@@ -214,7 +241,12 @@ namespace FakeFitness.View
 			RefreshView();
 		}
 
-		//Cuando se edita el campo minutos.
+		/// <summary>
+		/// Edición de los Minutos de un ejercicio (<see cref="Core.Exercise.mins"/> ).
+		/// </summary>
+		/// <param name="o">Copia de <see cref="ExercisesTreeview"/>.</param>
+		/// <param name="e">Elemento que está editando de la lista.</param>
+		/// <returns>void</returns>
 		private void ExercisesMinsEdit(object o, Gtk.EditedArgs e)
 		{
 			var exe = AllExercises.Find(ae => ae.Id == GetIdByEditArgs(e));
@@ -224,7 +256,10 @@ namespace FakeFitness.View
 
 		// ... Utilidades Listas y XML.
 
-		// Carga la Lista en el Model del TreeView.
+		/// <summary>
+		/// Carga la <see cref="AllExercises"/>  en el <see cref="ExercisesTreeview"/> .
+		/// </summary>
+		/// <returns>void</returns>
 		private void UpdateExercisesTreeView()
 		{
 			// Crear una ListStore vacía.
@@ -238,7 +273,10 @@ namespace FakeFitness.View
 			ExercisesTreeview.Model = model;
 		}
 
-		// Cargar del XML a una Lista de ejercicios.
+		/// <summary>
+		/// Cargar del XML a <see cref="AllExercises"/> .
+		/// </summary>
+		/// <returns>void</returns>
 		private void XmlToExercisesList()
 		{
 			if (File.Exists(Core.Settings.ExercisesXML))
@@ -265,7 +303,10 @@ namespace FakeFitness.View
 			}
 		}
 
-		// Cuando se quiere guardar el contenido a xml.
+		/// <summary>
+		/// Vuelca <see cref="AllExercises"/> al XML <see cref="Core.Settings.ExercisesXML"/>.
+		/// </summary>
+		/// <returns>void</returns>
 		private void ExercisesListToXml()
 		{
 			var root = new XElement("Exercises");
@@ -290,7 +331,11 @@ namespace FakeFitness.View
 
 		// ... Eventos.
 
-		// Cuando se añade un ejercicio.
+		/// <summary>
+		/// Cuando se añade una medida, se calcula su ID, se leen los campos <see cref="MeasureWeight"/> 
+		/// y <see cref="MeasureSize"/>.
+		/// </summary>
+		/// <returns>void</returns>
 		private void MeasureAdd()
 		{
 			if (DayMeasures.Count() < 1)
@@ -339,7 +384,10 @@ namespace FakeFitness.View
 			RefreshView();
 		}
 
-		// Actualiza los entrys de las medidas.
+		/// <summary>
+		/// Actualiza los entrys de las medidas <see cref="MeasureWeight"/> y <see cref="MeasureSize"/>.
+		/// </summary>
+		/// <returns>void</returns>
 		private void UpdateMeasureData()
 		{
 			if (DayMeasures.Count > 0)
@@ -359,7 +407,11 @@ namespace FakeFitness.View
 		}
 
 		// ... Utilidades Listas y XML.
-		// Cargar del XML a una Lista de ejercicios.
+
+		/// <summary>
+		/// Cargar del XML a <see cref="AllMeasures"/> .
+		/// </summary>
+		/// <returns>void</returns>
 		private void XmlToMeasuresList()
 		{
 			if (File.Exists(Core.Settings.MeasuresXML))
@@ -386,7 +438,10 @@ namespace FakeFitness.View
 			}
 		}
 
-		// Cuando se quiere guardar el contenido a xml.
+		/// <summary>
+		/// Volcar <see cref="AllMeasures"/> en el XML <see cref="Core.Settings.MeasuresXML"/>.
+		/// </summary>
+		/// <returns>void</returns>
 		private void MeasuresListToXml()
 		{
 			var root = new XElement("Measures");
@@ -411,7 +466,10 @@ namespace FakeFitness.View
 
 		private int[] CurrentGraphData = new int[31];
 
-		// Carga por separado los distintos datos de ejercicios para su graficado.
+		/// <summary>
+		/// Carga por separado los distintos datos de ejercicios para su graficado.
+		/// </summary>
+		/// <returns>void</returns>
 		private void MonthExerciseData()
 		{
 			GraphExercisesNum = new int[31];
@@ -435,7 +493,10 @@ namespace FakeFitness.View
 
 		}
 
-		// Carga por separado los distintos datos de medidas para su graficado.
+		/// <summary>
+		/// Carga por separado los distintos datos de medidas para su graficado.
+		/// </summary>
+		/// <returns>void</returns>
 		private void MonthMeasureData()
 		{
 			GraphMeasuresSize = new int[31];
@@ -455,32 +516,50 @@ namespace FakeFitness.View
 
 		}
 
-
+		/// <summary>
+		/// Dibuja el grafico en base a <see cref="GraphExercisesDist"/>.
+		/// </summary>
+		/// <returns>void</returns>
 		private void GraphicDist()
 		{
 			CurrentGraphData = GraphExercisesDist;
 			RenderGraph("KiloMeters", 255, 30, 0);
 		}
 
+		/// <summary>
+		/// Dibuja el grafico en base a <see cref="GraphExercisesTime"/>.
+		/// </summary>
+		/// <returns>void</returns>
 		private void GraphicTime()
 		{
 			CurrentGraphData = GraphExercisesTime;
 			RenderGraph("Hours", 0, 0, 255);
 		}
 
+		/// <summary>
+		/// Dibuja el grafico en base a <see cref="GraphMeasuresWeight"/>. 
+		/// </summary>
+		/// <returns>void</returns>
 		private void GraphicWeight()
 		{
 			CurrentGraphData = GraphMeasuresWeight;
 			RenderGraph("Weight", 255, 0, 0);
 		}
 
+		/// <summary>
+		/// Dibuja el grafico en base a <see cref="GraphMeasuresSize"/>.
+		/// </summary>
+		/// <returns>void</returns>
 		private void GraphicSize()
 		{
 			CurrentGraphData = GraphMeasuresSize;
 			RenderGraph("Size", 0, 120, 0);
 		}
 
-
+		/// <summary>
+		/// Renderiza el grafico en base a los datos de <see cref="CurrentGraphData"/>.
+		/// </summary>
+		/// <returns>void</returns>
 		private void RenderGraph(string SectionSTR, int R, int G, int B)
 		{
 			using (var canvas = Gdk.CairoHelper.Create(DrawingArea.GdkWindow))

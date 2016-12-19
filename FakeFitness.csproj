@@ -49,5 +49,8 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Mono.Cairo" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="README.dox" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

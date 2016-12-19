@@ -1,0 +1,21 @@
+﻿/**
+*
+* @mainpage FAKE FITNESS project :)
+*
+* > Tecnologías utilizadas: CSharp, GtkSharp.
+*
+* @author Daniel Camba Lamas
+* @author Diego Casanova José
+* @author Daniel Sanchez Valencia
+* @author David Mosquera Dominguez
+*
+* # Racionalización.
+*	* Aplicación para el control personal del físico.
+*	* Primer contacto con las tecnologías utilizadas y stand-alone.
+*
+* # Capacidades.
+*	* Gestión de medidas.
+*	* Gestión de ejercicios.
+*	* Visualización textual por días.
+*	* Visualización gráfica por meses.
+*/
