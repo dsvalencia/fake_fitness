@@ -5,19 +5,23 @@ namespace FakeFitness.View
 {
 	public partial class MainWindow : Gtk.Window
 	{
-		// Variables GTK vista calendario.
+		///<param name= "Calendar"> Variables GTK vista calendario.</param>
 		private Gtk.Calendar Calendar;
 
-		// Variables GTK vista grafico.
+		///<param name= "DrawingArea"> Variables GTK vista grafico.</param>
 		private Gtk.DrawingArea DrawingArea;
 
-		// Variables GTK vista ejerecicicios.
+		///<param name= "ExerciseDist"> Variable GTK vista de distancia de ejerecicios.</param>
 		private Gtk.Entry ExerciseDist;
+		///<param name= "ExerciseMins"> Variables GTK vista de minutos de ejercicios.</param>
 		private Gtk.Entry ExerciseMins;
+		///<param name= "ExercisesTreeview"> Variables GTK vista de ejercicios en forma de lista.</param>
 		private Gtk.TreeView ExercisesTreeview;
 
-		// Variables GTK vista ejerecicicios.
+		///<param name= "MeasureWeight"> V Variables GTK vista de peso.</param>
 		private Gtk.Entry MeasureWeight;
+
+		///<param name= "MeasureSize"> V Variables GTK vista de tamaño de cintura.</param>
 		private Gtk.Entry MeasureSize;
 
 		
@@ -27,12 +31,18 @@ namespace FakeFitness.View
 			Build();
 			OnInit();
 		}
-
-		// Cerrar la aplicacion.
+		/// <summary>
+		/// Cerrar la aplicacion.
+		/// </summary>
+		/// <returns>Void</returns>
 		private void Quit() => Gtk.Application.Quit();
 
-		// Controla cuando se hace click derecho en un ejercicio.
+		
 		[GLib.ConnectBeforeAttribute]
+		/// <summary>
+		/// Controla cuando se hace click derecho en un ejercicio.
+		/// </summary>
+		/// <returns>Void</returns>
 		protected void OnRightExercise(object sender, Gtk.ButtonPressEventArgs e)
 		{
 			if (e.Event.Button == 3) // Botón derecho.
@@ -54,7 +64,10 @@ namespace FakeFitness.View
 				}
 			}
 		}
-
+		/// <summary>
+		/// Construye la vista sobre la que se basa la aplicación
+		/// </summary>
+		/// <returns>Void</returns>
 		private void Build()
 		{
 
@@ -90,7 +103,10 @@ namespace FakeFitness.View
 
 			this.Add(Layout);
 		}
-
+		/// <summary>
+		/// Genera la vista de calendario de la aplicación 
+		/// </summary>
+		/// <returns>La vista en que se muestra el calendario</returns>
 		private Gtk.VBox CalendarView()
 		{
 			var ViewBox = new Gtk.VBox(false, 5);
@@ -106,7 +122,10 @@ namespace FakeFitness.View
 
 			return ViewBox;
 		}
-
+		/// <summary>
+		/// Calcula la vista que mostrará la lista de ejercicios  
+		/// </summary>
+		/// <returns>La vista en la que se muestra una lista de los ejercicios </returns>
 		private Gtk.VBox ExercisesListView()
 		{
 			var ViewBox = new Gtk.VBox(false, 5);
@@ -151,7 +170,10 @@ namespace FakeFitness.View
 
 			return ViewBox;
 		}
-
+		/// <summary>
+		/// Genera la vista que añade ejercicios nuevos
+		 /// </summary>
+		/// <returns>Muestra la vista que permite añadir un ejercicio</returns>
 		private Gtk.HBox ExercisesAddView()
 		{
 			var ViewBox = new Gtk.HBox(false, 5);
@@ -188,7 +210,10 @@ namespace FakeFitness.View
 			// Add main box to the window
 			return ViewBox;
 		}
-
+		/// <summary>
+		/// Genera la vista que añade medidas nuevas
+		/// </summary>
+		/// <returns>Muestra la vista que permite añadir una medida</returns>
 		private Gtk.HBox MeasureView()
 		{
 			var ViewBox = new Gtk.HBox(false, 5);
@@ -223,7 +248,10 @@ namespace FakeFitness.View
 			// Add main box to the window.
 			return ViewBox;
 		}
-
+		/// <summary>
+		/// Genera la vista que muestra el gráfico en la aplicación 
+		/// </summary>
+		/// <returns>La vista que contiene el gráfico a mostrar</returns>
 		private Gtk.HBox GraphicView()
 		{
 			var RightBox = new Gtk.VBox(false, 5);
