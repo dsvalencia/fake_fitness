@@ -42,7 +42,7 @@ namespace FakeFitness.Core
 
 		// CONSTRUCTOR ...
 
-		// ... Para creación inicial.
+		/// Para creación inicial.
 		public Measure(int id, short weight, short size)
 		{
 			this.Id = id;
@@ -51,7 +51,7 @@ namespace FakeFitness.Core
 			this.Date = DateTime.Now;
 		}
 
-		// ... Para utilizar en la carga del XML.
+		/// Para utilizar en la carga del XML.
 		public Measure(int id, short weight, short size, DateTime date)
 		{
 			this.Id = id;

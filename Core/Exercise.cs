@@ -38,7 +38,7 @@ namespace FakeFitness.Core
 
 		// CONSTRUCTOR ...
 
-		// ... Para creación inicial.
+		/// Para creación inicial.
 		public Exercise(int id, short dist, short mins)
 		{
 			this.Id = id;
@@ -47,7 +47,7 @@ namespace FakeFitness.Core
 			this.Date = DateTime.Now;
 		}
 
-		// ... Para utilizar en la carga del XML.
+		/// Para utilizar en la carga del XML.
 		public Exercise(int id, short dist, short mins, DateTime date)
 		{
 			this.Id = id;

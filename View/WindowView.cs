@@ -5,32 +5,35 @@ namespace FakeFitness.View
 {
 	public partial class MainWindow : Gtk.Window
 	{
-		///<param name= "Calendar"> Variables GTK vista calendario.</param>
+		/// Variable GTK para la vista calendario.
 		private Gtk.Calendar Calendar;
 
-		///<param name= "DrawingArea"> Variables GTK vista grafico.</param>
+		/// Variable GTK para la vista grafico.
 		private Gtk.DrawingArea DrawingArea;
 
-		///<param name= "ExerciseDist"> Variable GTK vista de distancia de ejerecicios.</param>
+		/// Variable GTK para el textarea de la distancia de ejerecicios.
 		private Gtk.Entry ExerciseDist;
-		///<param name= "ExerciseMins"> Variables GTK vista de minutos de ejercicios.</param>
+		/// Variables GTK para el textarea de los minutos de ejercicios.
 		private Gtk.Entry ExerciseMins;
-		///<param name= "ExercisesTreeview"> Variables GTK vista de ejercicios en forma de lista.</param>
+		/// Variables GTK para el listado de ejrecicios.
 		private Gtk.TreeView ExercisesTreeview;
 
-		///<param name= "MeasureWeight"> V Variables GTK vista de peso.</param>
+		/// Variables GTK para el textarea del peso.
 		private Gtk.Entry MeasureWeight;
 
-		///<param name= "MeasureSize"> V Variables GTK vista de tamaño de cintura.</param>
+		/// Variables GTK para el textarea de la talla.
 		private Gtk.Entry MeasureSize;
 
-		
+		/// <summary>
+		/// Constructor de la GUI.
+		/// </summary>
 		public MainWindow() : base(Gtk.WindowType.Toplevel)
 		{
 			this.Title = "••• DIA :: FakeFitness •••";
 			Build();
 			OnInit();
 		}
+
 		/// <summary>
 		/// Cerrar la aplicacion.
 		/// </summary>
